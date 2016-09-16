@@ -26,46 +26,47 @@ Defined Storage Blocks
     </table>
 {% endfor %}
 </div>
+<form action="/domain" method="POST" name="Domain">
 <div id="defdoms">
-{% if session.doms is defined %}
+{% if session.domains|length > 0 %}
     Defined Domains
-    {% for dom in session.doms %}
+    {% for domname in session.domains %}
         <table>
         <tr>
         <th>Name</th>
-        <td>{{dom["name"]}}</td>
+        <td>{{domname}}</td>
         <th>Cores</th>
-        <td>{{dom["cores"]}}</td>
+        <td>{{session.domains[domname]["cores"]}}</td>
         <th>Memory (GB)</th>
-        <td>{{dom["ram"]}}</td>
+        <td>{{session.domains[domname]["ram"]}}</td>
         <th>Public PVID</th>
-        <td>{{dom["pvid"]}}</td>
+        <td>{{session.domains[domname]["pvid"]}}</td>
         <th>Class</th>
-        <td>{{dom["class"]}}</td>
+        <td>{{session.domains[domname]["class"]}}</td>
         <th>Patch Group</th>
-        <td>{{dom["pg"]}}</td>
+        <td>{{session.domains[domname]["pgroup"]}}</td>
         <th>RAC Disk Groups</th>
-        <td>{{dom["racdisks"]}}</td>
+        <td>{{session.domains[domname]["racdisks"]}}</td>
         <th>Chassis</th>
-        <td>{{dom["chassis"]}}</td>
+        <td>{{session.domains[domname]["chassis"]}}</td>
         </tr>
         </table>
+        <input type="submit" name="rmbtn" value="Remove {{domname}}">
     {% endfor %}
 {% else %}
     No Domains currently defined
 {% endif %}
 </div>
-<form action="/chassis" method="POST" name="Chassis">
-<p>
+<div id="fields">
 Name: {{form.name(size=15)}}<br>
 Cores: {{form.cores(size=2)}}<br>
 Memory in GB: {{form.ram(size=3)}}<br>
 Public PVID: {{form.pvid(size=4)}}<br>
 Class: {{form.pclass}}<br>
-Patch Group: {{form.pg}}<br>
+Patch Group: {{form.pgroup}}<br>
 RAC Disk Groups (comma-separated): {{form.racdisks(size=50)}}<br>
 Chassis: {{form.chassis(size=50)}}<br>
-</p>
+</div>
 {{form.backbtn}}
 {{form.addbtn}}
 {{form.nextbtn}}
