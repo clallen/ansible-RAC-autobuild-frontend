@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Domain Configuration</h1>
+Cluster Name: {{session.clname}}
+
+<div id="defblocks">
+Defined Storage Blocks
+{% for blockname in session.blocks.iterkeys() %}
+    <table>
+    <tr>
+    <th>Name</th>
+    <td>{{blockname}}</td>
+    <th>Pool</th>
+    <td>{{session.blocks[blockname]["pool"]}}</td>
+    <th>Ports</th>
+    <td>{{session.blocks[blockname]["ports"]}}</td>
+    <th>Begin LDEV</th>
+    <td>{{session.blocks[blockname]["begin"]}}</td>
+    <th>End LDEV</th>
+    <td>{{session.blocks[blockname]["end"]}}</td>
+    <th>Size (GB)</th>
+    <td>{{session.blocks[blockname]["size"]}}</td>
+    <th>Chassis</th>
+    <td>{{session.blocks[blockname]["chassis"]}}</td>
+    </tr>
+    </table>
+{% endfor %}
+</div>
+<div id="defdoms">
+{% if session.doms is defined %}
+    Defined Domains
+    {% for dom in session.doms %}
+        <table>
+        <tr>
+        <th>Name</th>
+        <td>{{dom["name"]}}</td>
+        <th>Cores</th>
+        <td>{{dom["cores"]}}</td>
+        <th>Memory (GB)</th>
+        <td>{{dom["ram"]}}</td>
+        <th>Public PVID</th>
+        <td>{{dom["pvid"]}}</td>
+        <th>Class</th>
+        <td>{{dom["class"]}}</td>
+        <th>Patch Group</th>
+        <td>{{dom["pg"]}}</td>
+        <th>RAC Disk Groups</th>
+        <td>{{dom["racdisks"]}}</td>
+        <th>Chassis</th>
+        <td>{{dom["chassis"]}}</td>
+        </tr>
+        </table>
+    {% endfor %}
+{% else %}
+    No Domains currently defined
+{% endif %}
+</div>
+<form action="/chassis" method="POST" name="Chassis">
+<p>
+Name: {{form.name(size=15)}}<br>
+Cores: {{form.cores(size=2)}}<br>
+Memory in GB: {{form.ram(size=3)}}<br>
+Public PVID: {{form.pvid(size=4)}}<br>
+Class: {{form.pclass}}<br>
+Patch Group: {{form.pg}}<br>
+RAC Disk Groups (comma-separated): {{form.racdisks(size=50)}}<br>
+Chassis: {{form.chassis(size=50)}}<br>
+</p>
+{{form.backbtn}}
+{{form.addbtn}}
+{{form.nextbtn}}
+</form>
+{% endblock %}

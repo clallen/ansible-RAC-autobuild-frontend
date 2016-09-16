@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Storage Configuration</h1>
+Cluster Name: {{session.clname}}
+
+<form action="/storage" method="POST" name="Storage">
+<div id="defblocks">
+{% if session.blocks is defined %}
+    Defined Storage Blocks
+    {% for blockname in session.blocks.iterkeys() %}
+        <table>
+        <tr>
+        <th>Name</th>
+        <td>{{blockname}}</td>
+        <th>Pool</th>
+        <td>{{session.blocks[blockname]["pool"]}}</td>
+        <th>Ports</th>
+        <td>{{session.blocks[blockname]["ports"]}}</td>
+        <th>Begin LDEV</th>
+        <td>{{session.blocks[blockname]["begin"]}}</td>
+        <th>End LDEV</th>
+        <td>{{session.blocks[blockname]["end"]}}</td>
+        <th>Size (GB)</th>
+        <td>{{session.blocks[blockname]["size"]}}</td>
+        <th>Chassis</th>
+        <td>{{session.blocks[blockname]["chassis"]}}</td>
+        </tr>
+        </table>
+        <input type="submit" name="rmbtn" value="Remove {{blockname}}">
+    {% endfor %}
+{% else %}
+    No Storage Blocks currently defined
+{% endif %}
+</div>
+<p>
+Name: {{form.name(size=15)}}<br>
+Pool: {{form.pool(size=2)}}<br>
+Ports (comma-separated): {{form.ports(size=10)}}<br>
+Begin LDEV: {{form.begin(size=5)}}<br>
+End LDEV: {{form.end(size=5)}}<br>
+Size in GB: {{form.size(size=4)}}<br>
+Chassis (comma-separated): {{form.chassis(size=50)}}<br>
+</p>
+{{form.backbtn}}
+{{form.addbtn}}
+{{form.nextbtn}}
+</form>
+{% endblock %}
