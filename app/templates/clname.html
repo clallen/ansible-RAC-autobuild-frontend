@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-{% block content %}
-<h1>Cluster Creation</h1>
-<form action="/clname" method="POST" name="ClusterName">
-    Cluster Name:<br>
-    {{form.clname(size=50)}}<br>
-    <input type="submit" value="Next >>">
-</form>
-{% endblock %}

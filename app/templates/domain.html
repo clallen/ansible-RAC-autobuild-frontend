@@ -3,29 +3,6 @@
 <h1>Domain Configuration</h1>
 Cluster Name: {{session.clname}}
 
-<div id="defblocks">
-Defined Storage Blocks
-{% for blockname in session.blocks.iterkeys() %}
-    <table>
-    <tr>
-    <th>Name</th>
-    <td>{{blockname}}</td>
-    <th>Pool</th>
-    <td>{{session.blocks[blockname]["pool"]}}</td>
-    <th>Ports</th>
-    <td>{{session.blocks[blockname]["ports"]}}</td>
-    <th>Begin LDEV</th>
-    <td>{{session.blocks[blockname]["begin"]}}</td>
-    <th>End LDEV</th>
-    <td>{{session.blocks[blockname]["end"]}}</td>
-    <th>Size (GB)</th>
-    <td>{{session.blocks[blockname]["size"]}}</td>
-    <th>Chassis</th>
-    <td>{{session.blocks[blockname]["chassis"]}}</td>
-    </tr>
-    </table>
-{% endfor %}
-</div>
 <form action="/domain" method="POST" name="Domain">
 <div id="defdoms">
 {% if session.domains|length > 0 %}
@@ -45,8 +22,6 @@ Defined Storage Blocks
         <td>{{session.domains[domname]["class"]}}</td>
         <th>Patch Group</th>
         <td>{{session.domains[domname]["pgroup"]}}</td>
-        <th>RAC Disk Groups</th>
-        <td>{{session.domains[domname]["racdisks"]}}</td>
         <th>Chassis</th>
         <td>{{session.domains[domname]["chassis"]}}</td>
         </tr>
@@ -64,7 +39,6 @@ Memory in GB: {{form.ram(size=3)}}<br>
 Public PVID: {{form.pvid(size=4)}}<br>
 Class: {{form.pclass}}<br>
 Patch Group: {{form.pgroup}}<br>
-RAC Disk Groups (comma-separated): {{form.racdisks(size=50)}}<br>
 Chassis: {{form.chassis(size=50)}}<br>
 </div>
 {{form.backbtn}}

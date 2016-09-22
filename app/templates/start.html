@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Cluster Creation</h1>
+<form action="/start" method="POST" name="ClusterName">
+    Cluster Name:<br>
+    (4-9 alphanumeric characters)<br>
+    {{form.name(size=9)}}<br>
+    <input type="submit" value="Next >>">
+</form>
+{% if form.name.errors|length > 0 %}
+    <p id="validerr">{{form.name.errors[0]}}</p>
+{% endif %}
+{% endblock %}

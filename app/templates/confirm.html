@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Confirmation</h1>
+Cluster Name: {{session.clname}}
+
+<div id="defblocks">
+Defined Storage Blocks
+{% for blockname in session.blocks.iterkeys() %}
+    <table>
+    <tr>
+    <th>Name</th>
+    <td>{{blockname}}</td>
+    <th>Pool</th>
+    <td>{{session.blocks[blockname]["pool"]}}</td>
+    <th>Ports</th>
+    <td>{{session.blocks[blockname]["ports"]}}</td>
+    <th>Begin LDEV</th>
+    <td>{{session.blocks[blockname]["begin"]}}</td>
+    <th>End LDEV</th>
+    <td>{{session.blocks[blockname]["end"]}}</td>
+    <th>Size (GB)</th>
+    <td>{{session.blocks[blockname]["size"]}}</td>
+    <th>Chassis</th>
+    <td>{{session.blocks[blockname]["chassis"]}}</td>
+    </tr>
+    </table>
+{% endfor %}
+</div>
+<div id="defdomains">
+Defined Domains
+{% for domname in session.domains.iterkeys() %}
+    <table>
+    <tr>
+    <th>Name</th>
+    <td>{{domname}}</td>
+    <th>Cores</th>
+    <td>{{session.domains[domname]["cores"]}}</td>
+    <th>Memory</th>
+    <td>{{session.domains[domname]["ram"]}}</td>
+    <th>Public PVID</th>
+    <td>{{session.domains[domname]["pvid"]}}</td>
+    <th>Class</th>
+    <td>{{session.domains[domname]["pclass"]}}</td>
+    <th>Chassis</th>
+    <td>{{session.domains[domname]["chassis"]}}</td>
+    </tr>
+    </table>
+{% endfor %}
+</div>
+<form action="/confirm" method="POST" name="Storage">
+{{form.backbtn}}
+{{form.cfmbtn}}
+</form>
+{% endblock %}

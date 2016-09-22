@@ -4,56 +4,66 @@ from .forms import *
 from app import app
 
 @app.route("/")
-@app.route("/clname", methods=["GET", "POST"])
-def clname():
+@app.route("/start", methods=["GET", "POST"])
+def start():
     form = ClusterNameForm()
     if request.method == "POST":
-        if form.validate_on_submit():
-            session["clname"] = form.clname.data
+        if form.validate():
+            session["clname"] = form.name.data
             return redirect("/storage")
-        else:
-            flash("Field is required")
     else:
         if re.search(r"/storage$", str(request.referrer)) is None:
             session.clear()
             session["blocks"] = {}
             session["domains"] = {}
         else:
-            form.clname.data = session["clname"]
-    return render_template("clname.html", title="Start", form=form)
+            form.name.data = session["clname"]
+    return render_template("start.html", title="Start", form=form)
 
 @app.route("/storage", methods=["GET", "POST"])
 def storage():
     form = StorageForm()
+
+    def clear_form():
+        form.name.data = ""
+        form.pool.data = ""
+        form.ports.data = ""
+        form.begin.data = ""
+        form.end.data = ""
+        form.size.data = ""
+        form.chassis.data = ""
+
     if request.method == "POST":
         if form.addbtn.data:
-            if form.validate():
-                session["blocks"][form.name.data] = { "pool": form.pool.data,
-                                                      "ports": form.ports.data,
-                                                      "begin": form.begin.data,
-                                                      "end": form.end.data,
-                                                      "size": form.size.data,
-                                                      "chassis": form.chassis.data,
-                                                      "use": form.use.data }
+            blanks = False
+            for data in form.data.itervalues():
+                if isinstance(data, unicode):
+                    if len(data) == 0:
+                        blanks = True
+                        break
+            if not blanks:
+                if form.validate():
+                    session["blocks"][form.name.data] = { "pool": form.pool.data,
+                                                          "ports": form.ports.data,
+                                                          "begin": form.begin.data,
+                                                          "end": form.end.data,
+                                                          "size": form.size.data,
+                                                          "chassis": form.chassis.data }
+                    clear_form()
             else:
                 flash("All fields are required")
         elif "rmbtn" in request.form:
             session["blocks"].pop(request.form["rmbtn"].split()[1])
         elif form.backbtn.data:
-            return redirect("/clname")
+            return redirect("/start")
         elif form.nextbtn.data:
             if len(session["blocks"]) == 0:
                 flash("Storage must be defined before continuing")
             else:
                 return redirect("/domain")
-    form.name.data = ""
-    form.pool.data = ""
-    form.ports.data = ""
-    form.begin.data = ""
-    form.end.data = ""
-    form.size.data = ""
-    form.chassis.data = ""
-    form.use.data = ""
+    else:
+        clear_form()
+
     return render_template("storage.html", title="Storage", form=form)
 
 @app.route("/domain", methods=["GET", "POST"])
@@ -67,7 +77,6 @@ def domain():
                                                        "pvid": form.pvid.data,
                                                        "pclass": form.pclass.data,
                                                        "pgroup": form.pgroup.data,
-                                                       "racdisks": form.racdisks.data,
                                                        "chassis": form.chassis.data }
             else:
                 flash("All fields are required")
@@ -76,13 +85,25 @@ def domain():
         elif form.backbtn.data:
             return redirect("/storage")
         elif form.nextbtn.data:
-            pass
+            if len(session["domains"]) == 0:
+                flash("At least one domain must be defined before continuing")
+            else:
+                return redirect("/confirm")
     form.name.data = ""
     form.cores.data = ""
     form.ram.data = ""
     form.pvid.data = ""
     form.pclass.data = ""
     form.pgroup.data = ""
-    form.racdisks.data = ""
     form.chassis.data = ""
     return render_template("domain.html", title="Domain", form=form)
+
+@app.route("/confirm", methods=["GET", "POST"])
+def confirm():
+    form = ConfirmForm()
+    if request.method == "POST":
+        if form.backbtn.data:
+            return redirect("/domain")
+        elif form.cfmbtn.data:
+            pass
+    return render_template("confirm.html", title="Confirmation", form=form)
