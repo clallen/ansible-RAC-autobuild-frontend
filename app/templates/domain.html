@@ -34,12 +34,27 @@ Cluster Name: {{session.clname}}
 </div>
 <div id="fields">
 Name: {{form.name(size=15)}}<br>
+{% if form.name.errors|length > 0 %}
+    <p id="validerr">{{form.name.errors[0]}}</p>
+{% endif %}
 Cores: {{form.cores(size=2)}}<br>
+{% if form.cores.errors|length > 0 %}
+    <p id="validerr">{{form.cores.errors[0]}}</p>
+{% endif %}
 Memory in GB: {{form.ram(size=3)}}<br>
+{% if form.ram.errors|length > 0 %}
+    <p id="validerr">{{form.ram.errors[0]}}</p>
+{% endif %}
 Public PVID: {{form.pvid(size=4)}}<br>
+{% if form.pvid.errors|length > 0 %}
+    <p id="validerr">{{form.pvid.errors[0]}}</p>
+{% endif %}
 Class: {{form.pclass}}<br>
 Patch Group: {{form.pgroup}}<br>
 Chassis: {{form.chassis(size=50)}}<br>
+{% if form.chassis.errors|length > 0 %}
+    <p id="validerr">{{form.chassis.errors[0]}}</p>
+{% endif %}
 </div>
 {{form.backbtn}}
 {{form.addbtn}}

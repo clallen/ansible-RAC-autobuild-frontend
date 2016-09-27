@@ -41,7 +41,7 @@ Name: {{form.name(size=15)}}
 {% if form.pool.errors|length > 0 %}
     <p id="validerr">{{form.pool.errors[0]}}</p>
 {% endif %}
-<br>Ports (comma-separated): {{form.ports(size=10)}}
+<br>Ports (comma-separated): {{form.ports(size=20)}}
 {% if form.ports.errors|length > 0 %}
     <p id="validerr">{{form.ports.errors[0]}}</p>
 {% endif %}

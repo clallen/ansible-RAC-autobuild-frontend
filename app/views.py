@@ -69,15 +69,33 @@ def storage():
 @app.route("/domain", methods=["GET", "POST"])
 def domain():
     form = DomainForm()
+
+    def clear_form():
+        form.name.data = ""
+        form.cores.data = ""
+        form.ram.data = ""
+        form.pvid.data = ""
+        form.pclass.data = ""
+        form.pgroup.data = ""
+        form.chassis.data = ""
+
     if request.method == "POST":
         if form.addbtn.data:
-            if form.validate():
-                session["domains"][form.name.data] = { "cores": form.cores.data,
-                                                       "ram": form.ram.data,
-                                                       "pvid": form.pvid.data,
-                                                       "pclass": form.pclass.data,
-                                                       "pgroup": form.pgroup.data,
-                                                       "chassis": form.chassis.data }
+            blanks = False
+            for data in form.data.itervalues():
+                if isinstance(data, unicode):
+                    if len(data) == 0:
+                        blanks = True
+                        break
+            if not blanks:
+                if form.validate():
+                    session["domains"][form.name.data] = { "cores": form.cores.data,
+                                                           "ram": form.ram.data,
+                                                           "pvid": form.pvid.data,
+                                                           "pclass": form.pclass.data,
+                                                           "pgroup": form.pgroup.data,
+                                                           "chassis": form.chassis.data }
+                    clear_form()
             else:
                 flash("All fields are required")
         elif "rmbtn" in request.form:
@@ -89,13 +107,8 @@ def domain():
                 flash("At least one domain must be defined before continuing")
             else:
                 return redirect("/confirm")
-    form.name.data = ""
-    form.cores.data = ""
-    form.ram.data = ""
-    form.pvid.data = ""
-    form.pclass.data = ""
-    form.pgroup.data = ""
-    form.chassis.data = ""
+    else:
+        clear_form()
     return render_template("domain.html", title="Domain", form=form)
 
 @app.route("/confirm", methods=["GET", "POST"])
