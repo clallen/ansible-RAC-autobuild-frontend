@@ -10,7 +10,7 @@
 {% block content %}{% endblock %}
 {% with messages = get_flashed_messages() %}
     {% if messages %}
-        <div class=flashes>
+        <div id="flashes">
         {% for message in messages %}
             {{ message }}
         {% endfor %}

@@ -4,26 +4,22 @@ from wtforms import StringField, SubmitField, SelectField
 from wtforms.validators import Length, Regexp, ValidationError
 
 class ClusterNameForm(Form):
-    name = StringField("name", validators=[ Length(min=4, max=9),
-                                            Regexp(r"^[a-zA-Z0-9]+$",
-                                            message="Invalid characters (alphanumeric only)") ])
+    name = StringField("Cluster Name", validators=[ Length(min=4), Regexp(r"^[a-zA-Z0-9]+$",
+                                                    message="Invalid characters (alphanumeric only)") ])
 
 class StorageForm(Form):
-    name = StringField("name", validators=[ Length(max=20),
-                                                 Regexp(r"^\w+$",
-                                                 message="Invalid characters "+
-                                                 "(alphanumeric and underscore only)") ])
-    pool = StringField("pool", validators=[ Regexp(r"^[0-9]{2}$", message="Must be a 2-digit integer") ])
-    ports = StringField("ports")
-    begin = StringField("begin", validators=[ Regexp("^[a-f0-9]{2}:[a-f0-9]{2}$",
+    name = StringField("Name", validators=[ Regexp(r"^\w+$", message="Invalid characters "+
+                                            "(alphanumeric and underscore only)") ])
+    pool = StringField("Pool", validators=[ Regexp(r"^[0-9]{2}$", message="Must be a 2-digit integer") ])
+    ports = StringField("Ports")
+    begin = StringField("Begin LDEV", validators=[ Regexp("^[a-f0-9]{2}:[a-f0-9]{2}$",
                                                    message="Invalid LDEV", flags=re.I) ])
-    end = StringField("end", validators=[ Regexp("^[a-f0-9]{2}:[a-f0-9]{2}$",
-                                                   message="Invalid LDEV", flags=re.I) ])
-    size = StringField("size", validators=[ Length(max=4),
-                                                 Regexp(r"^\d+$", message="Must be an integer") ])
-    chassis = StringField("chassis", validators=[ Regexp("^(\w+)(,\w+)*$", flags=re.I,
-                                                       message="Must be either single chassis, "+
-                                                       "or a comma-separated list of chassis") ])
+    end = StringField("End LDEV", validators=[ Regexp("^[a-f0-9]{2}:[a-f0-9]{2}$",
+                                               message="Invalid LDEV", flags=re.I) ])
+    size = StringField("Size", validators=[ Regexp(r"^\d+$", message="Must be an integer") ])
+    chassis = StringField("Chassis", validators=[ Regexp("^(\w+)(,\w+)*$", flags=re.I,
+                                                  message="Must be either single chassis, "+
+                                                  "or a comma-separated list of chassis") ])
     addbtn = SubmitField(label="Add Storage Block")
     backbtn = SubmitField(label="<< Back")
     nextbtn = SubmitField(label="Next >>")

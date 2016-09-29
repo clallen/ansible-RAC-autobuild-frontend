@@ -1,4 +1,4 @@
-import sys, re
+import re
 from flask import render_template, flash, redirect, request, session
 from .forms import *
 from app import app
@@ -9,7 +9,7 @@ def start():
     form = ClusterNameForm()
     if request.method == "POST":
         if form.validate():
-            session["clname"] = form.name.data
+            session["clname"] = form.name.data.lower()
             return redirect("/storage")
     else:
         if re.search(r"/storage$", str(request.referrer)) is None:
@@ -44,11 +44,11 @@ def storage():
             if not blanks:
                 if form.validate():
                     session["blocks"][form.name.data] = { "pool": form.pool.data,
-                                                          "ports": form.ports.data,
-                                                          "begin": form.begin.data,
-                                                          "end": form.end.data,
+                                                          "ports": form.ports.data.upper(),
+                                                          "begin": form.begin.data.upper(),
+                                                          "end": form.end.data.upper(),
                                                           "size": form.size.data,
-                                                          "chassis": form.chassis.data }
+                                                          "chassis": form.chassis.data.lower() }
                     clear_form()
             else:
                 flash("All fields are required")
@@ -94,7 +94,7 @@ def domain():
                                                            "pvid": form.pvid.data,
                                                            "pclass": form.pclass.data,
                                                            "pgroup": form.pgroup.data,
-                                                           "chassis": form.chassis.data }
+                                                           "chassis": form.chassis.data.lower() }
                     clear_form()
             else:
                 flash("All fields are required")
@@ -114,6 +114,7 @@ def domain():
 @app.route("/confirm", methods=["GET", "POST"])
 def confirm():
     form = ConfirmForm()
+
     if request.method == "POST":
         if form.backbtn.data:
             return redirect("/domain")
