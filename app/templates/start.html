@@ -2,7 +2,7 @@
 {% block content %}
 <h1>Cluster Creation</h1>
 <form action="/start" method="POST" name="ClusterName">
-    {{form.name.label}} {{form.name(size=9, maxlength=9)}}<br>
+    {{form.name.label}} {{form.name(size=10, maxlength=10)}}<br>
     (4-9 alphanumeric characters)<br>
     <input type="submit" value="Next >>">
 </form>

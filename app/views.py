@@ -18,6 +18,7 @@ def start():
             session["domains"] = {}
         else:
             form.name.data = session["clname"]
+
     return render_template("start.html", title="Start", form=form)
 
 @app.route("/storage", methods=["GET", "POST"])
@@ -77,6 +78,7 @@ def domain():
         form.pvid.data = ""
         form.pclass.data = ""
         form.pgroup.data = ""
+        form.powner.data = ""
         form.chassis.data = ""
 
     if request.method == "POST":
@@ -89,12 +91,13 @@ def domain():
                         break
             if not blanks:
                 if form.validate():
-                    session["domains"][form.name.data] = { "cores": form.cores.data,
-                                                           "ram": form.ram.data,
-                                                           "pvid": form.pvid.data,
-                                                           "pclass": form.pclass.data,
-                                                           "pgroup": form.pgroup.data,
-                                                           "chassis": form.chassis.data.lower() }
+                    session["domains"][form.name.data.lower()] = { "cores": form.cores.data,
+                                                                   "ram": form.ram.data,
+                                                                   "pvid": form.pvid.data,
+                                                                   "pclass": form.pclass.data,
+                                                                   "pgroup": form.pgroup.data,
+                                                                   "powner": form.powner.data,
+                                                                   "chassis": form.chassis.data.lower() }
                     clear_form()
             else:
                 flash("All fields are required")
@@ -109,6 +112,7 @@ def domain():
                 return redirect("/confirm")
     else:
         clear_form()
+
     return render_template("domain.html", title="Domain", form=form)
 
 @app.route("/confirm", methods=["GET", "POST"])
@@ -120,4 +124,5 @@ def confirm():
             return redirect("/domain")
         elif form.cfmbtn.data:
             pass
+
     return render_template("confirm.html", title="Confirmation", form=form)

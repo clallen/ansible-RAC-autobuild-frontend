@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Confirmation</h1>
-Cluster Name: {{session.clname}}
+<h2>Cluster Name: {{session.clname}}</h2>
 
 <div id="defblocks">
 Defined Storage Blocks
-{% for blockname in session.blocks.iterkeys() %}
+{% for blockname in session.blocks|sort %}
     <table>
     <tr>
     <th>Name</th>
@@ -28,7 +28,7 @@ Defined Storage Blocks
 </div>
 <div id="defdomains">
 Defined Domains
-{% for domname in session.domains.iterkeys() %}
+{% for domname in session.domains|sort %}
     <table>
     <tr>
     <th>Name</th>
@@ -41,13 +41,17 @@ Defined Domains
     <td>{{session.domains[domname]["pvid"]}}</td>
     <th>Class</th>
     <td>{{session.domains[domname]["pclass"]}}</td>
+    <th>Patch Group</th>
+    <td>{{session.domains[domname]["pgroup"]}}</td>
+    <th>Owner</th>
+    <td>{{session.domains[domname]["powner"]}}</td>
     <th>Chassis</th>
     <td>{{session.domains[domname]["chassis"]}}</td>
     </tr>
     </table>
 {% endfor %}
 </div>
-<form action="/confirm" method="POST" name="Storage">
+<form action="/confirm" method="POST" name="Confirm">
 {{form.backbtn}}
 {{form.cfmbtn}}
 </form>

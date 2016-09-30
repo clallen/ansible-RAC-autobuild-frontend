@@ -7,7 +7,7 @@
 <div id="defblocks">
 {% if session.blocks|length > 0 %}
     Defined Storage Blocks
-    {% for blockname in session.blocks.iterkeys()|sort %}
+    {% for blockname in session.blocks|sort %}
         <table>
         <tr>
         <th>Name</th>

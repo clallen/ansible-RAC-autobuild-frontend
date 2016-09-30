@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Domain Configuration</h1>
-Cluster Name: {{session.clname}}
+<h2>Cluster Name: {{session.clname}}</h2>
 
 <form action="/domain" method="POST" name="Domain">
 <div id="defdoms">
 {% if session.domains|length > 0 %}
     Defined Domains
-    {% for domname in session.domains %}
+    {% for domname in session.domains|sort %}
         <table>
         <tr>
         <th>Name</th>
@@ -19,9 +19,11 @@ Cluster Name: {{session.clname}}
         <th>Public PVID</th>
         <td>{{session.domains[domname]["pvid"]}}</td>
         <th>Class</th>
-        <td>{{session.domains[domname]["class"]}}</td>
+        <td>{{session.domains[domname]["pclass"]}}</td>
         <th>Patch Group</th>
         <td>{{session.domains[domname]["pgroup"]}}</td>
+        <th>Owner</th>
+        <td>{{session.domains[domname]["powner"]}}</td>
         <th>Chassis</th>
         <td>{{session.domains[domname]["chassis"]}}</td>
         </tr>
@@ -33,27 +35,28 @@ Cluster Name: {{session.clname}}
 {% endif %}
 </div>
 <div id="fields">
-Name: {{form.name(size=15)}}<br>
+{{form.name.label}} {{form.name(size=15, maxlength=15)}}<br>
 {% if form.name.errors|length > 0 %}
-    <p id="validerr">{{form.name.errors[0]}}</p>
+    <p class="validerr">{{form.name.errors[0]}}</p>
 {% endif %}
-Cores: {{form.cores(size=2)}}<br>
+{{form.cores.label}} {{form.cores(size=2, maxlength=2)}}<br>
 {% if form.cores.errors|length > 0 %}
-    <p id="validerr">{{form.cores.errors[0]}}</p>
+    <p class="validerr">{{form.cores.errors[0]}}</p>
 {% endif %}
-Memory in GB: {{form.ram(size=3)}}<br>
+{{form.ram.label}} {{form.ram(size=3, maxlength=3)}} (GB)<br>
 {% if form.ram.errors|length > 0 %}
-    <p id="validerr">{{form.ram.errors[0]}}</p>
+    <p class="validerr">{{form.ram.errors[0]}}</p>
 {% endif %}
-Public PVID: {{form.pvid(size=4)}}<br>
+{{form.pvid.label}} {{form.pvid(size=4, maxlength=4)}}<br>
 {% if form.pvid.errors|length > 0 %}
-    <p id="validerr">{{form.pvid.errors[0]}}</p>
+    <p class="validerr">{{form.pvid.errors[0]}}</p>
 {% endif %}
-Class: {{form.pclass}}<br>
-Patch Group: {{form.pgroup}}<br>
-Chassis: {{form.chassis(size=50)}}<br>
+{{form.pclass.label}} {{form.pclass}}<br>
+{{form.pgroup.label}} {{form.pgroup}}<br>
+{{form.powner.label}} {{form.powner}}<br>
+{{form.chassis.label}} {{form.chassis(size=15, maxlength=15)}}<br>
 {% if form.chassis.errors|length > 0 %}
-    <p id="validerr">{{form.chassis.errors[0]}}</p>
+    <p class="validerr">{{form.chassis.errors[0]}}</p>
 {% endif %}
 </div>
 {{form.backbtn}}

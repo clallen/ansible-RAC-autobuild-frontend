@@ -34,17 +34,18 @@ class StorageForm(Form):
                     raise ValidationError("Invalid format: "+port+" (must be in format 'CL1-B')")
 
 class DomainForm(Form):
-    name = StringField("name", validators=[ Length(min=4, max=10),
-                                               Regexp(r"^[a-zA-Z0-9]+$", message="Invalid characters") ])
-    cores = StringField("cores", validators=[ Length(max=2), Regexp("^\d+$",
-                                                 message="Must be an integer") ])
-    ram = StringField("ram", validators=[ Length(max=3), Regexp("^\d+$", message="Must be an integer") ])
+    name = StringField("Name", validators=[ Length(min=4), Regexp(r"^[a-zA-Z0-9]+$",
+                                            message="Invalid characters") ])
+    cores = StringField("Cores", validators=[ Regexp("^\d+$", message="Must be an integer") ])
+    ram = StringField("Memory", validators=[ Regexp("^\d+$", message="Must be an integer") ])
 
-    pvid = StringField("pvid", validators=[ Regexp("^\d{4}$", message="Must be a 4-digit integer") ])
-    pclass = SelectField("pclass", choices=[ ("dev", "Dev"), ("test", "Test"), ("prod", "Prod") ])
-    pgroup = SelectField("pgroup", choices=[ ("pre_release", "Pre-release"), ("release", "Release"),
+    pvid = StringField("Public PVID", validators=[ Length(min=4),
+                                                   Regexp("^\d{4}$", message="Must be a 4-digit integer") ])
+    pclass = SelectField("Class", choices=[ ("dev", "Dev"), ("test", "Test"), ("prod", "Prod") ])
+    pgroup = SelectField("Patch Group", choices=[ ("pre_release", "Pre-release"), ("release", "Release"),
                                                 ("post_release", "Post-release") ])
-    chassis = StringField("chassis", validators=[ Regexp(r"^\w+$", message="Invalid characters") ])
+    powner = SelectField("Owner", choices=[ ("dba", "DBA"), ("asmt", "ASMT") ])
+    chassis = StringField("Chassis", validators=[ Regexp(r"^\w+$", message="Invalid characters") ])
     addbtn = SubmitField(label="Add Domain")
     backbtn = SubmitField(label="<< Back")
     nextbtn = SubmitField(label="Next >>")
